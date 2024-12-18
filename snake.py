@@ -48,6 +48,7 @@ score = 0
 # Boucle du jeu
 
 while True :
+    # Boucle evenement clavier pygame
     for event in pygame.event.get():
         if event.type == pygame.QUIT :
             pygame.quit()
@@ -61,3 +62,12 @@ while True :
                 change_to = "RIGHT"
             elif event.key == pygame.K_LEFT and direction != "RIGHT" :
                 change_to = "LEFT"
+    # Mise a jour direction
+    if change_to == "UP" and direction != "DOWN" :
+        change_to = "UP"
+    elif change_to == "DOWN" and direction != "UP" :
+        change_to = "DOWN"
+    elif change_to == "RIGHT" and direction != "LEFT" :
+        change_to = "RIGHT"
+    elif change_to == "LEFT" and direction != "RIGHT" :
+        change_to = "LEFT"
