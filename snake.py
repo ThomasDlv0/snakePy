@@ -93,3 +93,8 @@ while True :
     else:
         snake_body.pop()
 
+    #Position aleataire de la pomme
+    if not fruit_apparition :
+        fruit_position = [random.range(1, (WIDTH // 10)) * 10,
+                          random.range(1, (WIDTH // 10)) *10]
+        fruit_apparition = True
