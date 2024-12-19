@@ -1,3 +1,5 @@
+from shutil import which
+
 import pygame, random, time
 from pygame.examples.moveit import HEIGHT
 from pygame.examples.scrap_clipboard import screen
@@ -98,3 +100,9 @@ while True :
         fruit_position = [random.range(1, (WIDTH // 10)) * 10,
                           random.range(1, (WIDTH // 10)) *10]
         fruit_apparition = True
+
+    # Ecran, dessin des éléments
+    screen.fill(BLACK)
+    for pos in snake_body :
+        pygame.draw.rect(screen, GREEN, pygame.Rect(pos[0], pos[1], segment_size, segment_size))
+    pygame.draw.rect(screen, WHITE, pygame.Rect(fruit_position[0], fruit_position[1], segment_size, segment_size))
