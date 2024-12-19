@@ -117,3 +117,9 @@ while True :
 
     # Mise a jour de l'affichage
     pygame.display.flip()
+
+    # Vitesse affichage
+    fps.tick(15)
+
+# Ferme pygame
+pygame.quit()
