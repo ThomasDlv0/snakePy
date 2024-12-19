@@ -8,13 +8,14 @@ pygame.init()
 
 # Definition des constantes
 WIDTH, HEIGHT = 720, 480
+SIZE = (WIDTH, HEIGHT)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
 # Création de la fenêtre
-screen = pygame.display.set_mode(WIDTH, HEIGHT)
+screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption("Snake")
 
 # Image par secondes
@@ -89,3 +90,6 @@ while True :
     if snake_position == fruit_position :
         score += 10
         fruit_apparition = False
+    else:
+        snake_body.pop()
+
