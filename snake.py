@@ -1,9 +1,6 @@
 from shutil import which
 
 import pygame, random, time
-from pygame.examples.moveit import HEIGHT
-from pygame.examples.scrap_clipboard import screen
-from pygments.styles.rainbow_dash import WHITE
 
 # Initialisation de pygame
 pygame.init()
@@ -33,7 +30,7 @@ direction = "RIGHT"
 change_to = direction
 
 
-# Variable globales
+# Variables globales
 snake_body = [
     [100, 50],
     [90, 50],
@@ -45,80 +42,101 @@ fruit_position = [
     random.randrange(1, (HEIGHT // 10)) * 10,
 ]
 
-fruit_apparition = False
+fruit_apparition = True
 score = 0
 
-# Boucle du jeu
+# Fonction game over
+def game_over():
+    game_font = pygame.font.SysFont("arial", 50)
+    game_over_surface = game_font.render("Ton score est : " + str(score), True, WHITE)
+    game_over_rect = game_over_surface.get_rect()
+    game_over_rect.midtop = (WIDTH/2, HEIGHT/4)
+    screen.blit(game_over_surface, game_over_rect)
+    pygame.display.flip()
+    time.sleep(2)
+    pygame.quit()
+    quit()
 
-while True :
+# function score
+def show_score(color, font, size) :
+    score_font = pygame.font.SysFont(font, size)
+    score_surface = score_font.render("Score: " + str(score), True, WHITE)
+    score_rect = score_surface.get_rect()
+    screen.blit(score_surface, (10,10))
+# Boucle du jeu
+while True:
     # Boucle evenement clavier pygame
     for event in pygame.event.get():
-        if event.type == pygame.QUIT :
+        if event.type == pygame.QUIT:
             pygame.quit()
             quit()
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and direction != "DOWN" :
+            if event.key == pygame.K_UP and direction != "DOWN":
                 change_to = "UP"
-            elif event.key == pygame.K_DOWN and direction != "UP" :
+            elif event.key == pygame.K_DOWN and direction != "UP":
                 change_to = "DOWN"
-            elif event.key == pygame.K_RIGHT and direction != "LEFT" :
+            elif event.key == pygame.K_RIGHT and direction != "LEFT":
                 change_to = "RIGHT"
-            elif event.key == pygame.K_LEFT and direction != "RIGHT" :
+            elif event.key == pygame.K_LEFT and direction != "RIGHT":
                 change_to = "LEFT"
-    # Mise a jour direction
-    if change_to == "UP" and direction != "DOWN" :
-        change_to = "UP"
-    elif change_to == "DOWN" and direction != "UP" :
-        change_to = "DOWN"
-    elif change_to == "RIGHT" and direction != "LEFT" :
-        change_to = "RIGHT"
-    elif change_to == "LEFT" and direction != "RIGHT" :
-        change_to = "LEFT"
 
-    # déplacer le serpent
-    if direction == "UP" :
+    # Mise à jour direction
+    if change_to == "UP":
+        direction = "UP"
+    elif change_to == "DOWN":
+        direction = "DOWN"
+    elif change_to == "RIGHT":
+        direction = "RIGHT"
+    elif change_to == "LEFT":
+        direction = "LEFT"
+
+    # Déplacer le serpent
+    if direction == "UP":
         snake_position[1] -= segment_size
-    elif direction == "DOWN" :
-        snake_position[2] += segment_size
-    elif direction == "LEFT" :
-        snake_position[0] += segment_size
-    elif direction == "LEFT" :
+    elif direction == "DOWN":
+        snake_position[1] += segment_size
+    elif direction == "LEFT":
+        snake_position[0] -= segment_size
+    elif direction == "RIGHT":
         snake_position[0] += segment_size
 
     # Ajouter un segment au serpent
     snake_body.insert(0, list(snake_position))
 
-    # Test collision serpent
-    if snake_position == fruit_position :
+    # Test collision serpent avec la pomme
+    if snake_position == fruit_position:
         score += 10
         fruit_apparition = False
     else:
         snake_body.pop()
 
-    #Position aleataire de la pomme
-    if not fruit_apparition :
-        fruit_position = [random.range(1, (WIDTH // 10)) * 10,
-                          random.range(1, (WIDTH // 10)) *10]
+    # Position aléatoire de la pomme
+    if not fruit_apparition:
+        fruit_position = [
+            random.randrange(1, (WIDTH // 10)) * 10,
+            random.randrange(1, (HEIGHT // 10)) * 10,
+        ]
         fruit_apparition = True
 
     # Ecran, dessin des éléments
     screen.fill(BLACK)
-    for pos in snake_body :
+    for pos in snake_body:
         pygame.draw.rect(screen, GREEN, pygame.Rect(pos[0], pos[1], segment_size, segment_size))
-    pygame.draw.rect(screen, WHITE, pygame.Rect(fruit_position[0], fruit_position[1], segment_size, segment_size))
+    pygame.draw.rect(screen, RED, pygame.Rect(fruit_position[0], fruit_position[1], segment_size, segment_size))
 
-    if  snake_position[0] < 0 or snake_position[0] > WHITE - segment_size:
+    #affichage du score
+    show_score(WHITE, "arial", 20)
+    # Vérifier les collisions
+    if snake_position[0] < 0 or snake_position[0] >= WIDTH or snake_position[1] < 0 or snake_position[1] >= HEIGHT:
         game_over()
-    elif snake_position[1] < 0 or snake_position[1] > HEIGHT - segment_size :
-        game_over()
-    for block in snake_body [1:] :
+    for block in snake_body[1:]:
         if snake_position == block:
             game_over()
 
-    # Mise a jour de l'affichage
+    # Mise à jour de l'affichage
     pygame.display.flip()
 
-    # Vitesse affichage
+    # Vitesse d'affichage
     fps.tick(15)
 
 # Ferme pygame
