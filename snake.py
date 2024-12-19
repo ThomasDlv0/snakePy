@@ -114,3 +114,6 @@ while True :
     for block in snake_body [1:] :
         if snake_position == block:
             game_over()
+
+    # Mise a jour de l'affichage
+    pygame.display.flip()
