@@ -106,3 +106,11 @@ while True :
     for pos in snake_body :
         pygame.draw.rect(screen, GREEN, pygame.Rect(pos[0], pos[1], segment_size, segment_size))
     pygame.draw.rect(screen, WHITE, pygame.Rect(fruit_position[0], fruit_position[1], segment_size, segment_size))
+
+    if  snake_position[0] < 0 or snake_position[0] > WHITE - segment_size:
+        game_over()
+    elif snake_position[1] < 0 or snake_position[1] > HEIGHT - segment_size :
+        game_over()
+    for block in snake_body [1:] :
+        if snake_position == block:
+            game_over()
