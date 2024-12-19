@@ -71,3 +71,21 @@ while True :
         change_to = "RIGHT"
     elif change_to == "LEFT" and direction != "RIGHT" :
         change_to = "LEFT"
+
+    # déplacer le serpent
+    if direction == "UP" :
+        snake_position[1] -= segment_size
+    elif direction == "DOWN" :
+        snake_position[2] += segment_size
+    elif direction == "LEFT" :
+        snake_position[0] += segment_size
+    elif direction == "LEFT" :
+        snake_position[0] += segment_size
+
+    # Ajouter un segment au serpent
+    snake_body.insert(0, list(snake_position))
+
+    # Test collision serpent
+    if snake_position == fruit_position :
+        score += 10
+        fruit_apparition = False
